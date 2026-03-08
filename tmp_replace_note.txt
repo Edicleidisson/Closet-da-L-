@@ -1,0 +1,1 @@
+Note: macaquinhos.html still has hardcoded img/macaquinho-leana.jpg in renderizarMacaquinhos; will replace to use macaquinho.imagem next.

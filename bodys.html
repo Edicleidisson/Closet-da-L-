@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bodys - Closet da Lê</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .bodys-header {
+            background: linear-gradient(135deg, #6B4F3F, #8B6F5F);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .bodys-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .bodys-header p {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+        }
+
+        .filtro-btn {
+            padding: 10px 20px;
+            border: 2px solid #6B4F3F;
+            background: white;
+            color: #6B4F3F;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .filtro-btn:hover,
+        .filtro-btn.active {
+            background: #6B4F3F;
+            color: white;
+        }
+
+        .bodys-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 30px;
+            margin-bottom: 60px;
+        }
+
+        .body-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .body-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .body-img {
+            width: 100%;
+            height: 350px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #999;
+            overflow: hidden;
+        }
+
+        .body-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .body-info {
+            padding: 20px;
+        }
+
+        .body-info h3 {
+            color: #6B4F3F;
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+
+        .body-desc {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .preco {
+            font-size: 1.8rem;
+            color: #6B4F3F;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+
+
+        .btn-detalhes {
+            width: 100%;
+            padding: 12px;
+            background: #6B4F3F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-detalhes:hover {
+            background: #5a4033;
+        }
+
+        .btn-whatsapp {
+            width: 100%;
+            padding: 12px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+
+        /* Modal de Detalhes */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #f4f4f4;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover { color: #000; }
+
+        .modal h2 {
+            color: #6B4F3F;
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .volta-compras {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .volta-compras a {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #6B4F3F;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .volta-compras a:hover {
+            background: #5a4033;
+        }
+
+        @media (max-width: 768px) {
+            .bodys-container {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+
+            .bodys-header h1 {
+                font-size: 2rem;
+            }
+
+            .filtros {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">Frete grátis em compras acima de R$ 299</div>
+
+    <header class="navbar">
+        <div class="logo">CLOSET DA LÊ</div>
+        <nav>
+             <ul>
+                <li><a href="index.html">Voltar</a></li>
+                <li><a href="blusas.html">blusas</a></li>
+                <li><a href="bodys.html">Bodys</a></li>
+                <li><a href="calcas.html">calças</a></li>
+                <li><a href="conjuntos.html">conjuntos</a></li>
+                <li><a href="croppeds.html">Croppeds</a></li>
+                <li><a href="macaquinhos.html">Macaquinhos</a></li>
+                <li><a href="saias.html">saias</a></li>
+                <li><a href="shorts.html">shorts</a></li>
+                <li><a href="vestidos.html">vestidos</a></li>
+                <li class="carrinho-item-nav">
+                    <div class="carrinho-icon" onclick="abrirCarrinho()">
+                        <i class="fas fa-shopping-bag"></i>
+                        <div id="carrinho-contador"></div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="bodys-header">
+        <h1>COLEÇÃO DE BODYS</h1>
+        <p>Bodys elegantes e confortáveis para qualquer ocasião</p>
+    </section>
+
+    <div class="bodys-container" id="bodys-lista">
+        <!-- Bodys serão carregados aqui -->
+    </div>
+
+    <div class="volta-compras">
+        <a href="index.html">← Voltar às Compras</a>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalDetalhes" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">&times;</span>
+            <h2 id="modal-titulo"></h2>
+            <p><strong>Preço:</strong> <span id="modal-preco"></span></p>
+            <p id="modal-descricao"></p>
+            <p><strong>Composição:</strong> <span id="modal-composicao"></span></p>
+            <p><strong>Cuidados:</strong> <span id="modal-cuidados"></span></p>
+            <button class="btn-whatsapp" onclick="comprarBody()">Chamar no WhatsApp</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function gerarNomePorArquivo(nomeArquivo, prefixoPadrao) {
+            const semExtensao = nomeArquivo.replace(/\.[^.]+$/, '');
+            const regexPrefixo = new RegExp('^' + prefixoPadrao.toLowerCase() + '[-_]*');
+            const semPrefixo = semExtensao.replace(regexPrefixo, '');
+            const partes = semPrefixo.split(/[-_]+/).filter(Boolean);
+            const nomeFormatado = partes
+                .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+                .join(' ');
+            return nomeFormatado ? (prefixoPadrao + ' ' + nomeFormatado) : prefixoPadrao;
+        }
+
+        function completarProdutosComImagens(arrayProdutos, prefixoArquivo, prefixoNome, precoPadrao, categoriaPadrao) {
+            const usados = new Set(arrayProdutos.map(p => p.imagem));
+            availableImages
+                .filter(img => img.toLowerCase().startsWith(prefixoArquivo.toLowerCase()))
+                .forEach(imgName => {
+                    if (!usados.has(imgName)) {
+                        arrayProdutos.push({
+                            id: arrayProdutos.length + 1,
+                            nome: gerarNomePorArquivo(imgName, prefixoNome),
+                            preco: precoPadrao,
+                            categoria: categoriaPadrao || prefixoArquivo,
+                            imagem: imgName,
+                            descricao: `${prefixoNome} da coleção Closet da Lê.`
+                        });
+                    }
+                });
+        }
+
+        const bodys = [
+            {
+                id: 1,
+                nome: "Body Básico",
+                preco: "R$ 39,90",
+                categoria: "basico",
+                imagem: "body-branco.jpg",
+                descricao: "Body básico branco, confortável e versátil. Essencial no guarda-roupa de qualquer mulher.",
+            },
+            {
+                id: 2,
+                nome: "Body",
+                preco: "R$ 69,90",
+                categoria: "manga",
+                imagem: "body-bege.jpg",
+                descricao: "Body com manga comprida, perfeito para looks sofisticados. Elegante e sexy.",
+                composicao: "92% Poliéster, 8% Elastano",
+                cuidados: "Lavar à mão em água morna",
+                cores: ["black", "white", "pink"]
+            },
+            {
+                id: 3,
+                nome: "Body Bojo Nude",
+                preco: "R$ 89,90",
+                categoria: "bojo",
+                imagem: "body-liz.jpg",
+                descricao: "Body com bojo integrado para suporte e conforto. Estilo clássico e feminino.",
+                composicao: "82% Poliamida, 18% Elastano",
+                cuidados: "Lavar à mão em água fria",
+                cores: ["nude", "black", "white"]
+            },
+            {
+                id: 4,
+                nome: "Body Básico Preto",
+                preco: "R$ 54,90",
+                categoria: "basico",
+                imagem: "body-luna-branco.jpg",
+                descricao: "Body preto clássico, combinável com tudo. A peça-chave para qualquer guarda-roupa.",
+                composicao: "95% Algodão, 5% Elastano",
+                cuidados: "Lavar separadamente em água fria",
+                cores: ["black", "white", "pink", "blue"]
+            },
+            {
+                id: 5,
+                nome: "Body Manga Transpassada Rosa",
+                preco: "R$ 69,90",
+                categoria: "manga",                imagem: "body-preto.jpg",                descricao: "Body com ombro superposto e manga. Design moderno e romanticamente sexy.",
+                composicao: "90% Poliéster, 10% Elastano",
+                cuidados: "Lavar à mão em água morna",
+                cores: ["pink", "white", "black"]
+            },
+            {
+                id: 6,
+                nome: "Body Bojo Preto",
+                preco: "R$ 89,90",
+                categoria: "bojo",
+                imagem: "body-trico.jpg",
+                descricao: "Body com bojo, oferece forma e suporte. Perfeito para usar sozinho ou com outras peças.",
+                composicao: "80% Poliamida, 20% Elastano",
+                cuidados: "Lavar à mão em água fria com sabão neutro",
+                cores: ["black", "nude", "white"]
+            },
+            {
+                id: 7,
+                nome: "Body Tricô Bege",
+                preco: "R$ 64,90",
+                categoria: "basico",
+                imagem: "body-zara-cinza.jpg",
+                descricao: "Body em tricô suave e aconchegante. Perfeito para dias frescos com estilo.",
+                composicao: "100% Acrílico",
+                cuidados: "Lavar à mão em água morna",
+                cores: ["nude", "white", "black"]
+            },
+            {
+                id: 8,
+                nome: "Body Manga Cruz",
+                preco: "R$ 74,90",
+                categoria: "manga",
+                imagem: "body-zara.jpg",
+                descricao: "Body com manga e detalhe em cruz nas costas. Peça sofisticada e atrativa.",
+                composicao: "85% Poliéster, 15% Elastano",
+                cuidados: "Lavar à mão em água morna",
+                cores: ["black", "white", "pink"]
+            }
+        ];
+
+        const availableImages = [
+            "body-branco.jpg"
+        ];
+
+        let bodysFiltrados = bodys;
+        let bodySelecionado = null;
+
+        function renderizarBodys(lista) {
+            const container = document.getElementById('bodys-lista');
+            container.innerHTML = '';
+
+            const listaComImagem = lista.filter(p => availableImages.includes(p.imagem));
+            listaComImagem.forEach(body => {
+                const card = document.createElement('div');
+                card.className = 'body-card';
+                
+                // Verificar se existe imagem verso
+                const temVerso = body.imagemVerso ? true : false;
+                const htmlToggle = temVerso ? `<button class="produto-img-toggle" onclick="alternarImagemProduto(this)">👁️ Ver Verso</button>` : '';
+                const htmlIndicador = temVerso ? `<span class="produto-img-indicator">Frente</span>` : '';
+                const htmlEventosHover = temVerso ? `onmouseenter="mostrarVersoHover(this)" onmouseleave="restaurarFrenteHover(this)"` : '';
+                
+                card.innerHTML = `
+                    <div class="produto-img-container" ${htmlEventosHover}>
+                        <img src="img/${body.imagem}" 
+                             alt="${body.nome}" 
+                             data-frente="${body.imagem}"
+                             data-verso="${body.imagemVerso || ''}"
+                             onerror="this.alt='Imagem do ${body.nome}'">
+                        ${htmlToggle}
+                        ${htmlIndicador}
+                    </div>
+                    <div class="body-info">
+                        <h3>${body.nome}</h3>
+                        <p class="body-desc">${body.descricao.substring(0, 80)}...</p>
+                        <p class="preco">${body.preco}</p>
+                        <button class="btn-detalhes" onclick="adicionarAoCarrinho(${JSON.stringify(body).replace(/"/g, '&quot;')})">Adicionar ao Carrinho</button>
+                        <button class="btn-whatsapp" onclick="comprarDireto(${JSON.stringify(body).replace(/"/g, '&quot;')})">Comprar</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filtrarBodys(categoria) {
+            // Atualizar botões de filtro
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Filtrar bodys
+            if (categoria === 'todos') {
+                bodysFiltrados = bodys;
+            } else {
+                bodysFiltrados = bodys.filter(b => b.categoria === categoria);
+            }
+
+            renderizarBodys(bodysFiltrados);
+        }
+
+        function abrirDetalhes(id) {
+            bodySelecionado = bodys.find(b => b.id === id);
+            if (bodySelecionado) {
+                document.getElementById('modal-titulo').textContent = bodySelecionado.nome;
+                document.getElementById('modal-preco').textContent = bodySelecionado.preco;
+                document.getElementById('modal-descricao').textContent = bodySelecionado.descricao;
+                document.getElementById('modal-composicao').textContent = bodySelecionado.composicao;
+                document.getElementById('modal-cuidados').textContent = bodySelecionado.cuidados;
+                document.getElementById('modalDetalhes').style.display = 'block';
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalDetalhes').style.display = 'none';
+        }
+
+        function comprarBody(id = null) {
+            const body = id ? bodys.find(b => b.id === id) : bodySelecionado;
+            if (body) {
+                comprar(body.nome);
+            }
+        }
+
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalDetalhes');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Carregar bodys ao iniciar
+        completarProdutosComImagens(bodys, 'body', 'Body', 'R$ 54,90', 'body');
+        renderizarBodys(bodys);
+    </script>
+
+    <!-- Modal Carrinho -->
+    <div id="modalCarrinho" class="modalCarrinho">
+        <div class="carrinho-modal-content">
+            <span class="close-carrinho" onclick="fecharCarrinho()">&times;</span>
+            <h2><i class="fas fa-shopping-bag"></i> Meu Carrinho</h2>
+            <div id="carrinho-itens"></div>
+            <div id="carrinho-total"></div>
+            <div class="carrinho-acoes">
+                <button class="btn-continuar-compras" onclick="fecharCarrinho()">← Continuar Comprando</button>
+                <button class="btn-ir-checkout" onclick="abrirCheckout()">Ir para Checkout →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Checkout -->
+    <div id="modalCheckout" class="modalCheckout">
+        <div class="checkout-modal-content">
+            <span class="close-checkout" onclick="fecharCheckout()">&times;</span>
+            <h2>Finalizar Compra</h2>
+            
+            <div class="checkout-resumo">
+                <h3>Resumo do Pedido</h3>
+                <div id="checkout-itens"></div>
+                <div class="checkout-total">
+                    <span>Total:</span>
+                    <span id="checkout-total-valor">R$ 0,00</span>
+                </div>
+            </div>
+
+            <div class="dados-comprador">
+                <h3>Seus Dados</h3>
+                <div class="form-group">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp (com DDD):</label>
+                    <input type="tel" id="whatsapp" placeholder="5521999999999 ou (21) 99999-9999">
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" id="endereco" placeholder="Rua, número, bairro, cidade - UF">
+                </div>
+            </div>
+
+            <div class="pagamento-opcoes">
+                <h3>Escolha a Forma de Pagamento:</h3>
+                
+                <label class="pagamento-item">
+                    <input type="radio" name="pagamento" value="Cartão de Crédito" onchange="selecionarPagamento(this)">
+                    <div class="pagamento-info">
+                        <strong><i class="fas fa-credit-card"></i> Cartão de Crédito</strong>
+                        <small>Parcelado em até 3x sem juros</small>
+                    </div>
+                </label>
+                
+                <label class="pagamento-item">
+                    <input type="radio" name="pagamento" value="PIX" onchange="selecionarPagamento(this)">
+                    <div class="pagamento-info">
+                        <strong><i class="fas fa-mobile-alt"></i> PIX</strong>
+                        <small>Receba 5% de desconto com PIX</small>
+                    </div>
+                </label>
+                
+                <label class="pagamento-item">
+                    <input type="radio" name="pagamento" value="Débito em Conta" onchange="selecionarPagamento(this)">
+                    <div class="pagamento-info">
+                        <strong><i class="fas fa-university"></i> Débito em Conta</strong>
+                        <small>Transferência bancária</small>
+                    </div>
+                </label>
+            </div>
+
+            <div class="checkout-acoes">
+                <button class="btn-voltar-carrinho" onclick="fecharCheckout(); abrirCarrinho();">← Voltar</button>
+                <button class="btn-finalizar" onclick="processarCheckout()">Finalizar Compra →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Função para selecionar método de pagamento
+        function selecionarPagamento(element) {
+            document.querySelectorAll('.pagamento-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.closest('.pagamento-item').classList.add('selected');
+        }
+
+        // Função para atualizar resumo no checkout
+        function atualizarResumoCheckout() {
+            const checkoutItens = document.getElementById('checkout-itens');
+            const checkoutTotal = document.getElementById('checkout-total-valor');
+            
+            if (checkoutItens) {
+                checkoutItens.innerHTML = carrinho.map(item => `
+                    <div class="checkout-item">
+                        <span>${item.nome} (x${item.quantidade})</span>
+                        <span>R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}</span>
+                    </div>
+                `).join('');
+            }
+            
+            const total = calcularTotal();
+            if (checkoutTotal) {
+                checkoutTotal.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            }
+        }
+
+        // Função para processar checkout
+        function processarCheckout() {
+            const metodoPagamento = document.querySelector('input[name="pagamento"]:checked');
+            if (!metodoPagamento) {
+                alert('Por favor, selecione uma forma de pagamento');
+                return;
+            }
+
+            const nome = document.getElementById('nome').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const endereco = document.getElementById('endereco').value.trim();
+
+            if (!nome || !whatsapp || !endereco) {
+                alert('Por favor, preencha Nome, WhatsApp e Endereço');
+                return;
+            }
+
+            // Enviar dados para o WhatsApp
+            const dadosCliente = { nome, whatsapp, endereco };
+            finalizarCompra(metodoPagamento.value, dadosCliente);
+        }
+
+        // Atualizar resumo quando o modal de checkout abre
+        const abrirCheckoutOriginal = abrirCheckout;
+        abrirCheckout = function() {
+            atualizarResumoCheckout();
+            abrirCheckoutOriginal();
+        }
+    </script>
+
+</body>
+</html>
